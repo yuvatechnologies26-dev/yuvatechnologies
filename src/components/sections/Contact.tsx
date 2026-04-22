@@ -45,44 +45,27 @@ export const Contact = () => {
         </div>
 
         <div className="grid lg:grid-cols-2 gap-6 max-w-5xl mx-auto">
-          <form
-            onSubmit={submit}
-            className="rounded-3xl border border-border bg-card p-7 shadow-card space-y-4"
-          >
-            <h3 className="font-display font-bold text-xl text-foreground">Get Started</h3>
-            <p className="text-sm text-muted-foreground">
-              Fill out our quick form and we'll get back to you within 24 hours with a personalized
-              growth plan.
-            </p>
-            <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
-              <Input id="name" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+          <div className="rounded-3xl border border-border bg-card p-3 shadow-card overflow-hidden">
+            <div className="px-4 pt-4 pb-3">
+              <h3 className="font-display font-bold text-xl text-foreground">Get Started</h3>
+              <p className="text-sm text-muted-foreground mt-1">
+                Fill out our quick form and we'll get back to you within 24 hours with a personalized
+                growth plan.
+              </p>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+            <div className="rounded-2xl overflow-hidden border border-border bg-background">
+              <iframe
+                src="https://docs.google.com/forms/d/e/1FAIpQLSelpy0EMOK1UNj5zR31jYi0WuHGCISzDU8uJ-dw7ba7SJvXig/viewform?embedded=true"
+                width="100%"
+                height="720"
+                title="Contact form"
+                className="block w-full"
+                loading="lazy"
+              >
+                Loading…
+              </iframe>
             </div>
-            <div className="space-y-2">
-              <Label>Platform</Label>
-              <Select value={form.platform} onValueChange={(v) => setForm({ ...form, platform: v })}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select platform" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="youtube">YouTube</SelectItem>
-                  <SelectItem value="instagram">Instagram</SelectItem>
-                  <SelectItem value="both">Both</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="message">Message</Label>
-              <Textarea id="message" rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />
-            </div>
-            <Button type="submit" className="w-full rounded-full h-12 shadow-glow">
-              Send Message
-            </Button>
-          </form>
+          </div>
 
           <div className="rounded-3xl border border-border bg-card p-7 shadow-card">
             <h3 className="font-display font-bold text-xl text-foreground">Reach Out Directly</h3>
