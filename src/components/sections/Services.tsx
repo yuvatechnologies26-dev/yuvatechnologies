@@ -1,24 +1,7 @@
-const services = [
-  ["📱", "Content Marketing", "Full-stack social media content strategy and scheduling across platforms."],
-  ["🌐", "Hosting Services", "Reliable hosting solutions for your digital presence."],
-  ["📊", "Inventory Software Development", "Custom inventory management systems for your business."],
-  ["💻", "Website Development", "Modern, responsive websites built for performance and conversions."],
-  ["🔍", "SEO Optimisation", "Data-driven SEO to rank higher and attract organic traffic."],
-  ["🎥", "UGC Video Creation", "Authentic user-generated style video content for your brand."],
-  ["📸", "UGC Photo Creation", "Lifestyle and product photography optimized for social platforms."],
-  ["✨", "AI Model Creation", "Realistic AI models for product showcases and brand visuals."],
-  ["🤖", "AI Chatbox Integration", "Intelligent chatbots to automate customer engagement 24/7."],
-  ["📢", "Digital Marketing", "Comprehensive digital campaigns to grow your online presence."],
-  ["🛍️", "Product Marketing", "Strategic product positioning and launch campaigns."],
-  ["📅", "Content Marketing (Calendar)", "Consistent content calendars and creation pipelines."],
-  ["📧", "Email Marketing", "High-converting email sequences and newsletter campaigns."],
-  ["🏦", "Banking Software", "Custom banking software solutions for financial institutions."],
-  ["🧾", "Billing Software", "Automated billing and invoicing systems for your business."],
-  ["🛒", "E-commerce Software", "Full-featured e-commerce platforms built to scale."],
-  ["🗂️", "Account Management Service", "Dedicated account managers to handle your digital presence."],
-] as const;
+import { useCMS } from "@/hooks/useCMS";
 
 export const Services = () => {
+  const { data } = useCMS<any>("services");
   return (
     <section id="services" className="py-20 sm:py-28 bg-background">
       <div className="container mx-auto container-px">
@@ -35,18 +18,18 @@ export const Services = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {services.map(([icon, name, desc], i) => (
+          {data.map((s, i) => (
             <div
-              key={name}
+              key={s.id}
               className="reveal group flex gap-4 p-5 rounded-2xl border border-border bg-card transition-all duration-300 hover:border-primary hover:-translate-y-1 hover:shadow-lift"
               style={{ transitionDelay: `${(i % 6) * 60}ms` }}
             >
               <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gradient-brand text-2xl shadow-soft transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
-                {icon}
+                {s.icon}
               </div>
               <div>
-                <div className="font-display font-bold text-foreground">{name}</div>
-                <p className="text-sm text-muted-foreground mt-1">{desc}</p>
+                <div className="font-display font-bold text-foreground">{s.name}</div>
+                <p className="text-sm text-muted-foreground mt-1">{s.description}</p>
               </div>
             </div>
           ))}

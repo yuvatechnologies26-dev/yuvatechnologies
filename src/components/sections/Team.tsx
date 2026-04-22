@@ -1,17 +1,8 @@
 import { ChevronDown } from "lucide-react";
-
-const team = [
-  ["Rishabh Alevoor", "Founder & CEO", "RA"],
-  ["Sanjay", "Head of Production", "SJ"],
-  ["Ashik", "Head of Insta Management & Marketing", "AK"],
-  ["Devin", "Head of Video Editing", "DV"],
-  ["Vasu", "Web Developer", "VA"],
-  ["Priyam", "Editor", "PR"],
-  ["Shubham", "Editor", "SH"],
-  ["Keshav Tiwari", "Editor", "KT"],
-] as const;
+import { useCMS } from "@/hooks/useCMS";
 
 export const Team = () => {
+  const { data } = useCMS<any>("team_members");
   return (
     <section id="team" className="py-20 sm:py-28 bg-gradient-soft">
       <div className="container mx-auto container-px">
@@ -28,17 +19,17 @@ export const Team = () => {
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 max-w-6xl mx-auto">
-          {team.map(([name, role, initials], i) => (
+          {data.map((m, i) => (
             <div
-              key={name}
+              key={m.id}
               className="reveal rounded-2xl bg-card border border-border p-6 text-center transition-all duration-300 hover:-translate-y-1 hover:border-primary hover:shadow-lift"
               style={{ transitionDelay: `${(i % 4) * 70}ms` }}
             >
               <div className="grid h-20 w-20 mx-auto place-items-center rounded-full bg-gradient-brand font-display font-extrabold text-primary-foreground text-xl shadow-glow transition-transform duration-300 hover:scale-110">
-                {initials}
+                {m.initials}
               </div>
-              <div className="font-display font-bold text-foreground mt-4">{name}</div>
-              <div className="text-primary text-xs mt-1">{role}</div>
+              <div className="font-display font-bold text-foreground mt-4">{m.name}</div>
+              <div className="text-primary text-xs mt-1">{m.role}</div>
               <ChevronDown className="h-4 w-4 text-muted-foreground mx-auto mt-3" />
             </div>
           ))}
