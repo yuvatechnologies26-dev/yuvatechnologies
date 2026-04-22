@@ -1,6 +1,5 @@
 const services = [
   ["📱", "Content Marketing", "Full-stack social media content strategy and scheduling across platforms."],
-  ["✂️", "Editing Support", "Professional video & photo editing tailored to your brand voice."],
   ["🌐", "Hosting Services", "Reliable hosting solutions for your digital presence."],
   ["📊", "Inventory Software Development", "Custom inventory management systems for your business."],
   ["💻", "Website Development", "Modern, responsive websites built for performance and conversions."],

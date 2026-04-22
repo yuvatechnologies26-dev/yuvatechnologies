@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
-const tabs = ["Content Marketing", "Additional Packages", "YT Management", "One-Time Services"] as const;
+const tabs = ["Content Marketing", "YT Management", "One-Time Services"] as const;
 type Tab = (typeof tabs)[number];
 
 const contentPlans = [
@@ -198,12 +198,6 @@ export const Pricing = () => {
                 </Button>
               </div>
             ))}
-          </div>
-        )}
-
-        {tab === "Additional Packages" && (
-          <div className="text-center text-muted-foreground py-12">
-            More custom packages — talk to us at <span className="text-primary font-semibold">yuvatechnologies26@gmail.com</span>
           </div>
         )}
 
