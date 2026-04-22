@@ -203,7 +203,7 @@ export const Pricing = () => {
 
         {tab === "Additional Packages" && (
           <div className="text-center text-muted-foreground py-12">
-            More custom packages — talk to us at <span className="text-primary font-semibold">rrcreatorlab@gmail.com</span>
+            More custom packages — talk to us at <span className="text-primary font-semibold">yuvatechnologies26@gmail.com</span>
           </div>
         )}
 

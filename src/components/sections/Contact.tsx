@@ -8,8 +8,8 @@ export const Contact = () => {
   const channels = [
     [Calendar, "Book a Meeting", "Free Consultation on Topmate"],
     [MessageCircle, "WhatsApp", "+91 9483886270"],
-    [Mail, "Email", "rrcreatorlab@gmail.com"],
-    [Instagram, "Instagram", "@rrcreatorlab"],
+    [Mail, "Email", "yuvatechnologies26@gmail.com"],
+    [Instagram, "Instagram", "@yuvatechnologies"],
   ] as const;
 
   return (

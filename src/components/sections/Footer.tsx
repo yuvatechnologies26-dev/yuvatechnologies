@@ -22,8 +22,8 @@ export const Footer = () => {
           </p>
           <div className="mt-5 space-y-2 text-sm text-navy-foreground/80">
             <div>📱 +91 9483886270</div>
-            <div>✉️ rrcreatorlab@gmail.com</div>
-            <div>📸 @rrcreatorlab</div>
+            <div>✉️ yuvatechnologies26@gmail.com</div>
+            <div>📸 @yuvatechnologies</div>
           </div>
           <div className="mt-5 flex gap-3">
             {[Youtube, Instagram, Mail].map((Icon, i) => (

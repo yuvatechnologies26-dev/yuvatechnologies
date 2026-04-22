@@ -49,8 +49,8 @@ export const HowItWorks = () => {
         <div className="text-center mt-12">
           <Button
             size="lg"
-            className="rounded-full px-8 h-12 shadow-glow"
-            onClick={() => toast.success("Let's get started!")}
+            className="rounded-full px-8 h-12 shadow-glow hover:scale-105 active:scale-95 transition-transform"
+            onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
           >
             Get Started
           </Button>
