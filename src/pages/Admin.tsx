@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,14 +8,18 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Logo } from "@/components/Logo";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
+import { Loader2, ArrowLeft } from "lucide-react";
+
+const ADMIN_SIGNUP_CODE = "Rishi@123";
 
 const Admin = () => {
   const { session, loading } = useAuth();
   const [tab, setTab] = useState("signin");
   const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const [signIn, setSignIn] = useState({ email: "", password: "" });
-  const [signUp, setSignUp] = useState({ name: "", email: "", password: "" });
+  const [signUp, setSignUp] = useState({ name: "", email: "", password: "", code: "" });
 
   if (loading) {
     return (
@@ -29,17 +33,27 @@ const Admin = () => {
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
-    setBusy(true);
+    setError(null); setSuccess(null); setBusy(true);
     const { error } = await supabase.auth.signInWithPassword(signIn);
     setBusy(false);
-    if (error) toast.error(error.message);
-    else toast.success("Welcome back!");
+    if (error) {
+      setError(error.message);
+    } else {
+      toast.success("Welcome back!");
+    }
   };
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null); setSuccess(null);
+
+    if (signUp.code !== ADMIN_SIGNUP_CODE) {
+      setError("Invalid signup code. Please contact the administrator.");
+      return;
+    }
+
     setBusy(true);
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email: signUp.email,
       password: signUp.password,
       options: {
@@ -47,24 +61,52 @@ const Admin = () => {
         data: { display_name: signUp.name },
       },
     });
-    setBusy(false);
+
     if (error) {
-      toast.error(error.message);
-    } else {
-      toast.success("Account created. You're signed in.");
+      setBusy(false);
+      setError(error.message);
+      return;
     }
+
+    // Grant admin role to the new user (anyone with the code is admin)
+    if (data.user) {
+      await supabase.from("user_roles").insert({ user_id: data.user.id, role: "admin" });
+    }
+
+    setBusy(false);
+    setSuccess("Account created! Switching to Sign In…");
+    setTimeout(() => {
+      setTab("signin");
+      setSignIn({ email: signUp.email, password: "" });
+      setSuccess(null);
+    }, 1500);
   };
 
   return (
     <div className="min-h-screen grid place-items-center bg-gradient-soft container-px py-12">
       <div className="w-full max-w-md rounded-3xl bg-card border border-border shadow-lift p-8">
+        <Link to="/" className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary mb-4">
+          <ArrowLeft className="h-3 w-3" /> Back to website
+        </Link>
+
         <div className="flex flex-col items-center text-center mb-6">
           <Logo size={56} />
           <h1 className="font-display font-extrabold text-2xl mt-4 text-foreground">Admin Access</h1>
           <p className="text-sm text-muted-foreground">Yuva Technologies Dashboard</p>
         </div>
 
-        <Tabs value={tab} onValueChange={setTab}>
+        {error && (
+          <div className="mb-4 rounded-lg bg-destructive/10 text-destructive border border-destructive/30 px-3 py-2 text-sm">
+            {error}
+          </div>
+        )}
+        {success && (
+          <div className="mb-4 rounded-lg bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 px-3 py-2 text-sm">
+            {success}
+          </div>
+        )}
+
+        <Tabs value={tab} onValueChange={(v) => { setTab(v); setError(null); setSuccess(null); }}>
           <TabsList className="grid grid-cols-2 w-full">
             <TabsTrigger value="signin">Sign In</TabsTrigger>
             <TabsTrigger value="signup">Sign Up</TabsTrigger>
@@ -91,7 +133,7 @@ const Admin = () => {
           <TabsContent value="signup" className="mt-5">
             <form onSubmit={handleSignUp} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="su-name">Name</Label>
+                <Label htmlFor="su-name">Full Name</Label>
                 <Input id="su-name" required value={signUp.name}
                   onChange={(e) => setSignUp({ ...signUp, name: e.target.value })} />
               </div>
@@ -106,16 +148,17 @@ const Admin = () => {
                   value={signUp.password} onChange={(e) => setSignUp({ ...signUp, password: e.target.value })} />
                 <p className="text-xs text-muted-foreground">Minimum 8 characters.</p>
               </div>
+              <div className="space-y-2">
+                <Label htmlFor="su-code">Signup Code</Label>
+                <Input id="su-code" required placeholder="Enter access code"
+                  value={signUp.code} onChange={(e) => setSignUp({ ...signUp, code: e.target.value })} />
+              </div>
               <Button type="submit" disabled={busy} className="w-full rounded-full h-11 shadow-glow">
                 {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : "Create Account"}
               </Button>
             </form>
           </TabsContent>
         </Tabs>
-
-        <a href="/" className="mt-6 block text-center text-xs text-muted-foreground hover:text-primary">
-          ← Back to website
-        </a>
       </div>
     </div>
   );
