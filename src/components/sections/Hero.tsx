@@ -1,6 +1,39 @@
-import { Calendar, ArrowRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Calendar, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
+import hero1 from "@/assets/hero-1.png";
+import hero2 from "@/assets/hero-2.png";
+import hero3 from "@/assets/hero-3.png";
+import hero4 from "@/assets/hero-4.png";
+
+const slides = [
+  {
+    image: hero1,
+    title: "Turn Content",
+    accent: "Into Growth.",
+    desc: "Editing, strategy and social media management that scales your brand.",
+  },
+  {
+    image: hero2,
+    title: "Building Creators.",
+    accent: "Scaling Reach.",
+    desc: "Helping creators and brands grow on YouTube and Instagram through strategy, consistency, and optimized execution.",
+  },
+  {
+    image: hero3,
+    title: "Strategy That",
+    accent: "Drives Results.",
+    desc: "Data-driven content planning and team collaboration to maximize your social media impact.",
+  },
+  {
+    image: hero4,
+    title: "Focus On Creating.",
+    accent: "We Handle The Growth.",
+    desc: "We manage editing, posting and optimization — you focus on what you do best.",
+  },
+];
 
 const stats = [
   { value: "50+", label: "YouTube Managed" },
@@ -10,47 +43,122 @@ const stats = [
 ];
 
 export const Hero = () => {
+  const [active, setActive] = useState(0);
+  const [loaded, setLoaded] = useState<Record<number, boolean>>({});
+
+  // Preload all
+  useEffect(() => {
+    slides.forEach((s, i) => {
+      const img = new Image();
+      img.src = s.image;
+      img.onload = () => setLoaded((p) => ({ ...p, [i]: true }));
+    });
+  }, []);
+
+  // Auto-rotate
+  useEffect(() => {
+    const id = setInterval(() => setActive((a) => (a + 1) % slides.length), 6000);
+    return () => clearInterval(id);
+  }, []);
+
+  const go = (dir: number) =>
+    setActive((a) => (a + dir + slides.length) % slides.length);
+
+  const current = slides[active];
+  const isLoaded = loaded[active];
+
   return (
     <section
       id="home"
-      className="relative min-h-screen pt-24 pb-16 flex items-center bg-gradient-hero overflow-hidden"
+      className="relative min-h-screen pt-16 flex items-center overflow-hidden bg-navy"
     >
-      {/* Color blobs */}
-      <div className="absolute -top-32 -left-24 h-[420px] w-[420px] rounded-full bg-primary/30 blur-[120px] animate-blob-drift" />
-      <div className="absolute -bottom-32 -right-24 h-[460px] w-[460px] rounded-full bg-secondary/30 blur-[120px] animate-blob-drift" style={{ animationDelay: "2s" }} />
+      {/* Background image carousel */}
+      <div className="absolute inset-0">
+        {slides.map((s, i) => (
+          <div
+            key={i}
+            className={`absolute inset-0 transition-opacity duration-1000 ${
+              i === active ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            {!loaded[i] && <Skeleton className="absolute inset-0 rounded-none" />}
+            <img
+              src={s.image}
+              alt=""
+              className={`h-full w-full object-cover ${
+                i === active ? "animate-ken-burns" : ""
+              }`}
+              key={`${i}-${active === i ? "active" : "idle"}`}
+            />
+          </div>
+        ))}
+        {/* Overlays for legibility */}
+        <div className="absolute inset-0 bg-navy/70" />
+        <div className="absolute inset-0 bg-gradient-to-b from-navy/40 via-navy/60 to-navy" />
+      </div>
 
-      <div className="container mx-auto container-px relative z-10">
-        <div className="flex flex-col items-center text-center gap-7 max-w-4xl mx-auto animate-fade-in">
-          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-background/70 backdrop-blur px-4 py-1.5 text-xs font-medium text-foreground shadow-soft">
+      {/* Color blobs */}
+      <div className="absolute -top-32 -left-24 h-[420px] w-[420px] rounded-full bg-primary/25 blur-[120px] animate-blob-drift pointer-events-none" />
+      <div
+        className="absolute -bottom-32 -right-24 h-[460px] w-[460px] rounded-full bg-secondary/25 blur-[120px] animate-blob-drift pointer-events-none"
+        style={{ animationDelay: "2s" }}
+      />
+
+      {/* Carousel arrows */}
+      <button
+        onClick={() => go(-1)}
+        aria-label="Previous"
+        className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-20 grid h-10 w-10 sm:h-12 sm:w-12 place-items-center rounded-full bg-white/10 backdrop-blur border border-white/20 text-white hover:bg-white/20 transition"
+      >
+        <ChevronLeft className="h-5 w-5" />
+      </button>
+      <button
+        onClick={() => go(1)}
+        aria-label="Next"
+        className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-20 grid h-10 w-10 sm:h-12 sm:w-12 place-items-center rounded-full bg-white/10 backdrop-blur border border-white/20 text-white hover:bg-white/20 transition"
+      >
+        <ChevronRight className="h-5 w-5" />
+      </button>
+
+      <div className="container mx-auto container-px relative z-10 py-20">
+        <div className="flex flex-col items-center text-center gap-7 max-w-4xl mx-auto">
+          {/* Logo placeholder badge — user will swap later */}
+          <div className="relative animate-scale-in">
+            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-gold via-secondary to-primary blur-md opacity-70" />
+            <div className="relative grid h-[150px] w-[150px] place-items-center rounded-full bg-navy ring-4 ring-white/10 shadow-lift overflow-hidden">
+              <span className="text-[10px] tracking-[0.25em] text-white/60 uppercase">
+                Your Logo
+              </span>
+            </div>
+          </div>
+
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur px-4 py-1.5 text-xs font-medium text-white shadow-soft animate-fade-in">
             <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
             Content Growth & Social Media Management Studio
           </span>
 
-          {/* Logo badge */}
-          <div className="relative">
-            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-gold via-secondary to-primary blur-md opacity-70" />
-            <div className="relative grid h-[140px] w-[140px] place-items-center rounded-full bg-navy ring-4 ring-gold/60 shadow-lift">
-              <div className="text-center leading-tight">
-                <div className="font-display font-extrabold text-3xl text-navy-foreground">YT</div>
-                <div className="text-[9px] tracking-[0.2em] text-navy-foreground/80 mt-1">YUVA TECHNOLOGIES</div>
-              </div>
-            </div>
-          </div>
-
-          <h1 className="font-display font-extrabold text-foreground leading-[1.05] text-[clamp(2.25rem,6vw,4rem)]">
-            Focus On Creating.
+          {/* Animated headline — re-mounts per slide */}
+          <h1
+            key={`title-${active}`}
+            className="font-display font-extrabold leading-[1.05] text-[clamp(2.25rem,6vw,4rem)] text-white animate-fade-in"
+          >
+            {current.title}
             <br />
-            <span className="text-gradient">We Handle The Growth.</span>
+            <span className="text-gradient">{current.accent}</span>
           </h1>
 
-          <p className="text-lg text-muted-foreground max-w-2xl">
-            Yuva Technologies manages editing, posting and optimization.
+          <p
+            key={`desc-${active}`}
+            className="text-lg text-white/80 max-w-2xl animate-fade-in"
+            style={{ animationDelay: "120ms" }}
+          >
+            {current.desc}
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto animate-fade-in" style={{ animationDelay: "200ms" }}>
             <Button
               size="lg"
-              className="rounded-full h-12 px-7 text-base shadow-glow"
+              className="rounded-full h-12 px-7 text-base shadow-glow hover:scale-[1.03] transition-transform"
               onClick={() => toast.success("Booking your free consultation...")}
             >
               <Calendar className="h-4 w-4" />
@@ -59,7 +167,7 @@ export const Hero = () => {
             <Button
               size="lg"
               variant="outline"
-              className="rounded-full h-12 px-7 text-base bg-background"
+              className="rounded-full h-12 px-7 text-base bg-white/10 backdrop-blur border-white/30 text-white hover:bg-white/20 hover:text-white"
               onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
             >
               Get Started <ArrowRight className="h-4 w-4" />
@@ -67,28 +175,32 @@ export const Hero = () => {
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-10 mt-8 w-full max-w-2xl">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-10 mt-8 w-full max-w-2xl animate-fade-in" style={{ animationDelay: "280ms" }}>
             {stats.map((s) => (
-              <div key={s.label} className="text-center">
-                <div className="font-display font-extrabold text-2xl text-foreground">{s.value}</div>
-                <div className="text-xs text-muted-foreground mt-1">{s.label}</div>
+              <div key={s.label} className="text-center hover-lift">
+                <div className="font-display font-extrabold text-2xl text-white">{s.value}</div>
+                <div className="text-xs text-white/70 mt-1">{s.label}</div>
               </div>
             ))}
           </div>
 
           {/* Carousel dots */}
-          <div className="flex items-center gap-2 mt-4">
-            {[0, 1, 2, 3, 4].map((i) => (
-              <span
+          <div className="flex items-center gap-2 mt-6">
+            {slides.map((_, i) => (
+              <button
                 key={i}
-                className={
-                  i === 2
-                    ? "h-2 w-6 rounded-full bg-primary"
-                    : "h-2 w-2 rounded-full bg-foreground/20"
-                }
+                onClick={() => setActive(i)}
+                aria-label={`Go to slide ${i + 1}`}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  i === active ? "w-8 bg-primary" : "w-2 bg-white/30 hover:bg-white/60"
+                }`}
               />
             ))}
           </div>
+
+          {!isLoaded && (
+            <div className="text-[11px] text-white/40 mt-2">Loading visuals…</div>
+          )}
         </div>
       </div>
     </section>
