@@ -71,50 +71,66 @@ export const Navbar = () => {
         </div>
       </header>
 
-      {/* Slide-down menu (matches reference) */}
+      {/* Backdrop */}
       <div
+        onClick={() => setOpen(false)}
         className={cn(
-          "fixed inset-x-0 top-0 z-[60] bg-background/98 backdrop-blur-xl border-b border-border shadow-lift transition-all duration-500 ease-out",
-          open ? "translate-y-0 opacity-100 pointer-events-auto" : "-translate-y-full opacity-0 pointer-events-none",
+          "fixed inset-0 z-[55] bg-foreground/30 backdrop-blur-sm transition-opacity duration-300",
+          open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none",
         )}
-      >
-        <div className="h-1 w-full bg-gradient-brand" />
+        aria-hidden="true"
+      />
 
-        <div className="container mx-auto flex h-16 items-center justify-between container-px">
-          <a href="#home" onClick={() => setOpen(false)} className="flex items-center gap-3">
-            <Logo size={38} />
-            <span className="font-display font-extrabold text-foreground">
+      {/* Side drawer (left, ~half width on mobile, narrower on desktop) */}
+      <aside
+        className={cn(
+          "fixed top-0 left-0 z-[60] h-[100dvh] w-[78%] max-w-[360px] sm:max-w-[400px] bg-background border-r border-border shadow-lift flex flex-col transition-transform duration-400 ease-out",
+          open ? "translate-x-0" : "-translate-x-full",
+        )}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Main menu"
+      >
+        <div className="h-1 w-full bg-gradient-brand shrink-0" />
+
+        <div className="flex h-16 items-center justify-between px-5 border-b border-border/60 shrink-0">
+          <a href="#home" onClick={() => setOpen(false)} className="flex items-center gap-2.5">
+            <Logo size={34} />
+            <span className="font-display font-extrabold text-foreground text-sm">
               Yuva <span className="text-primary">Technologies</span>
             </span>
           </a>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
             <button
               onClick={() => setDark((d) => !d)}
-              className="grid h-10 w-10 place-items-center rounded-full border border-border bg-background text-foreground transition hover:bg-muted"
+              className="grid h-9 w-9 place-items-center rounded-full border border-border bg-background text-foreground transition hover:bg-muted"
               aria-label="Toggle dark mode"
             >
               {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
             <button
               onClick={() => setOpen(false)}
-              className="grid h-10 w-10 place-items-center rounded-full border border-border bg-background"
+              className="grid h-9 w-9 place-items-center rounded-full border border-border bg-background hover:bg-muted transition"
               aria-label="Close menu"
             >
-              <X className="h-5 w-5" />
+              <X className="h-4 w-4" />
             </button>
           </div>
         </div>
 
-        <nav className="container mx-auto container-px pt-6 pb-8 flex flex-col">
+        <nav className="flex-1 overflow-y-auto px-5 pt-4 pb-6 flex flex-col">
           {links.map((l, i) => (
             <a
               key={l.label}
               href={l.href}
               onClick={() => setOpen(false)}
-              className="group flex items-center justify-between py-4 border-b border-border/60 text-foreground hover:text-primary transition-colors animate-fade-in"
-              style={{ animationDelay: `${i * 50}ms` }}
+              className={cn(
+                "group flex items-center justify-between py-3.5 border-b border-border/50 text-foreground hover:text-primary transition-colors",
+                open && "animate-fade-in",
+              )}
+              style={{ animationDelay: open ? `${i * 40}ms` : undefined }}
             >
-              <span className="text-base sm:text-lg font-medium">{l.label}</span>
+              <span className="text-base font-medium">{l.label}</span>
               <ArrowRight className="h-4 w-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
             </a>
           ))}
@@ -122,15 +138,14 @@ export const Navbar = () => {
           <a
             href="/admin"
             onClick={() => setOpen(false)}
-            className="mt-6 inline-flex items-center gap-2 text-primary font-semibold animate-fade-in"
-            style={{ animationDelay: `${links.length * 50}ms` }}
+            className="mt-5 inline-flex items-center gap-2 text-primary font-semibold text-sm"
           >
             <Lock className="h-4 w-4" /> Admin Panel
           </a>
 
           <Button
             size="lg"
-            className="mt-6 w-full rounded-xl h-12 text-base bg-primary hover:bg-primary-dark transition-colors"
+            className="mt-5 w-full rounded-xl h-12 text-base bg-primary hover:bg-primary-dark transition-colors"
             onClick={() => {
               setOpen(false);
               document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
@@ -139,7 +154,7 @@ export const Navbar = () => {
             Get Started
           </Button>
         </nav>
-      </div>
+      </aside>
     </>
   );
 };
