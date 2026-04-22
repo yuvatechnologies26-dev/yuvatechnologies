@@ -1,4 +1,4 @@
-import { Play } from "lucide-react";
+import founderPhoto from "@/assets/founder.jpeg";
 
 const values = [
   ["❤️", "Quality over quantity", "Every project is handled with attention to detail."],
@@ -21,14 +21,17 @@ export const Founder = () => {
 
         <div className="grid lg:grid-cols-5 gap-10 items-start">
           <div className="lg:col-span-2">
-            <div className="relative aspect-[4/5] rounded-3xl bg-navy overflow-hidden shadow-lift">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/30 via-transparent to-secondary/30" />
-              <div className="absolute top-4 left-4 inline-flex items-center gap-2 rounded-full bg-background/90 backdrop-blur px-3 py-1.5 text-xs font-semibold text-foreground">
-                <Play className="h-3 w-3 fill-primary text-primary" /> Watch Introduction
-              </div>
-              <div className="absolute inset-0 grid place-items-center">
-                <div className="grid h-20 w-20 place-items-center rounded-full bg-primary/90 text-primary-foreground shadow-glow animate-float">
-                  <Play className="h-7 w-7 fill-current" />
+            <div className="group relative aspect-[4/5] rounded-3xl overflow-hidden shadow-lift">
+              <img
+                src={founderPhoto}
+                alt="Rishabh Alevoor — Founder & CEO of Yuva Technologies"
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-navy/70 via-navy/10 to-transparent" />
+              <div className="absolute bottom-4 left-4 right-4">
+                <div className="inline-flex items-center gap-2 rounded-full bg-background/90 backdrop-blur px-3 py-1.5 text-xs font-semibold text-foreground shadow-soft">
+                  <span className="h-2 w-2 rounded-full bg-primary animate-pulse" /> Founder
                 </div>
               </div>
             </div>
