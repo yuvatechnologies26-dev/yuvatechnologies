@@ -117,6 +117,10 @@ export default {
           "0%": { opacity: "0", transform: "translateX(24px)" },
           "100%": { opacity: "1", transform: "translateX(0)" },
         },
+        "marquee": {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.25s ease-out",
@@ -130,6 +134,7 @@ export default {
         "blob-drift": "blob-drift 14s ease-in-out infinite",
         "ken-burns": "ken-burns 8s ease-out both",
         shimmer: "shimmer 1.8s infinite",
+        marquee: "marquee 35s linear infinite",
       },
     },
   },
