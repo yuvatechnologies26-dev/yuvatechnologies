@@ -8,8 +8,26 @@ import NotFound from "./pages/NotFound.tsx";
 import Admin from "./pages/Admin.tsx";
 import AdminDashboard from "./pages/AdminDashboard.tsx";
 import PricingPage from "./pages/Pricing.tsx";
+import { PageTransition } from "@/components/PageTransition";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const queryClient = new QueryClient();
+
+const AppRoutes = () => {
+  useScrollReveal();
+  return (
+    <PageTransition>
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/pricing" element={<PricingPage />} />
+        <Route path="/admin" element={<Admin />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </PageTransition>
+  );
+};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -17,14 +35,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/pricing" element={<PricingPage />} />
-          <Route path="/admin" element={<Admin />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <AppRoutes />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
