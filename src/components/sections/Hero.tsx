@@ -3,63 +3,56 @@ import { Calendar, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+import { useCMS } from "@/hooks/useCMS";
 import hero1 from "@/assets/hero-1.png";
 import hero2 from "@/assets/hero-2.png";
 import hero3 from "@/assets/hero-3.png";
 import hero4 from "@/assets/hero-4.png";
 
-const slides = [
-  {
-    image: hero1,
-    title: "Turn Content",
-    accent: "Into Growth.",
-    desc: "Editing, strategy and social media management that scales your brand.",
-  },
-  {
-    image: hero2,
-    title: "Building Creators.",
-    accent: "Scaling Reach.",
-    desc: "Helping creators and brands grow on YouTube and Instagram through strategy, consistency, and optimized execution.",
-  },
-  {
-    image: hero3,
-    title: "Strategy That",
-    accent: "Drives Results.",
-    desc: "Data-driven content planning and team collaboration to maximize your social media impact.",
-  },
-  {
-    image: hero4,
-    title: "Focus On Creating.",
-    accent: "We Handle The Growth.",
-    desc: "We manage editing, posting and optimization — you focus on what you do best.",
-  },
-];
-
-const stats = [
-  { value: "50+", label: "YouTube Managed" },
-  { value: "10M+", label: "Insta Growth" },
-  { value: "100+", label: "Happy Creators" },
-  { value: "3x", label: "Avg. Growth" },
-];
+const slideImages = [hero1, hero2, hero3, hero4];
 
 export const Hero = () => {
   const [active, setActive] = useState(0);
   const [loaded, setLoaded] = useState<Record<number, boolean>>({});
+  const [settings, setSettings] = useState({
+    hero_headline: "Focus On Creating.",
+    hero_accent: "We Handle The Growth.",
+    hero_subtitle: "Yuva Technologies manages editing, posting and optimization.",
+    hero_cta1: "Book Free Consultation",
+    hero_cta2: "Get Started",
+  });
+  const { data: stats } = useCMS<any>("impact_stats");
 
-  // Preload all
+  useEffect(() => {
+    (supabase as any).from("site_settings").select("*").limit(1).single().then((r: any) => {
+      if (r.data) setSettings(r.data);
+    });
+  }, []);
+
+  const slides = slideImages.map((img, i) => ({
+    image: img,
+    title: i === slideImages.length - 1 ? settings.hero_headline : ["Turn Content", "Building Creators.", "Strategy That"][i],
+    accent: i === slideImages.length - 1 ? settings.hero_accent : ["Into Growth.", "Scaling Reach.", "Drives Results."][i],
+    desc: i === slideImages.length - 1 ? settings.hero_subtitle :
+      ["Editing, strategy and social media management that scales your brand.",
+       "Helping creators and brands grow on YouTube and Instagram through strategy, consistency, and optimized execution.",
+       "Data-driven content planning and team collaboration to maximize your social media impact."][i],
+  }));
+
   useEffect(() => {
     slides.forEach((s, i) => {
       const img = new Image();
       img.src = s.image;
       img.onload = () => setLoaded((p) => ({ ...p, [i]: true }));
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Auto-rotate
   useEffect(() => {
     const id = setInterval(() => setActive((a) => (a + 1) % slides.length), 6000);
     return () => clearInterval(id);
-  }, []);
+  }, [slides.length]);
 
   const go = (dir: number) =>
     setActive((a) => (a + dir + slides.length) % slides.length);
