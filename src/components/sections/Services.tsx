@@ -1,6 +1,5 @@
 const services = [
   ["📱", "Content Marketing", "Full-stack social media content strategy and scheduling across platforms."],
-  ["✂️", "Editing Support", "Professional video & photo editing tailored to your brand voice."],
   ["🌐", "Hosting Services", "Reliable hosting solutions for your digital presence."],
   ["📊", "Inventory Software Development", "Custom inventory management systems for your business."],
   ["💻", "Website Development", "Modern, responsive websites built for performance and conversions."],
@@ -31,7 +30,7 @@ export const Services = () => {
             What We <span className="text-primary">Do</span>
           </h2>
           <p className="mt-4 text-muted-foreground">
-            Eighteen end-to-end services covering content, growth, software and beyond.
+            End-to-end services covering content, growth, software and beyond.
           </p>
         </div>
 

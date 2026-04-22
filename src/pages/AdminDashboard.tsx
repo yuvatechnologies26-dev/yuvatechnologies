@@ -1,7 +1,7 @@
-import { Navigate, NavLink, useLocation } from "react-router-dom";
+import { Navigate, NavLink, useLocation, Link } from "react-router-dom";
 import {
   LayoutDashboard, Home, Layers, CreditCard, Zap, BarChart3,
-  ListChecks, Users, MessageSquare, HelpCircle, Star, LogOut, Loader2,
+  ListChecks, Users, MessageSquare, HelpCircle, Star, LogOut, Loader2, ExternalLink,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -103,9 +103,17 @@ const AdminDashboard = () => {
             <div className="text-xs text-muted-foreground">Admin</div>
             <h1 className="font-display font-bold text-xl text-foreground">{activeLabel}</h1>
           </div>
-          <Button variant="outline" size="sm" onClick={handleSignOut} className="md:hidden">
-            <LogOut className="h-4 w-4" />
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button asChild variant="outline" size="sm">
+              <Link to="/">
+                <ExternalLink className="h-4 w-4" />
+                <span className="hidden sm:inline ml-1">Back to Website</span>
+              </Link>
+            </Button>
+            <Button variant="outline" size="sm" onClick={handleSignOut} className="md:hidden">
+              <LogOut className="h-4 w-4" />
+            </Button>
+          </div>
         </header>
 
         <div className="p-6">
