@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Menu, Moon, Sun, X, Lock, ArrowRight } from "lucide-react";
 import { Logo } from "./Logo";
 import { Button } from "@/components/ui/button";
@@ -35,6 +35,59 @@ export const Navbar = () => {
     document.body.style.overflow = open ? "hidden" : "";
   }, [open]);
 
+  const drawerRef = useRef<HTMLElement | null>(null);
+  const openerRef = useRef<HTMLButtonElement | null>(null);
+
+  // ESC to close + focus trap inside drawer
+  useEffect(() => {
+    if (!open) return;
+
+    const drawer = drawerRef.current;
+    const focusables = () =>
+      drawer
+        ? Array.from(
+            drawer.querySelectorAll<HTMLElement>(
+              'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+            ),
+          ).filter((el) => !el.hasAttribute("data-skip-focus"))
+        : [];
+
+    // Focus first item on open
+    const t = window.setTimeout(() => {
+      const items = focusables();
+      items[0]?.focus();
+    }, 80);
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        setOpen(false);
+        return;
+      }
+      if (e.key !== "Tab") return;
+      const items = focusables();
+      if (items.length === 0) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+      if (e.shiftKey && active === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", onKey);
+    return () => {
+      window.clearTimeout(t);
+      document.removeEventListener("keydown", onKey);
+      // Restore focus to opener
+      openerRef.current?.focus();
+    };
+  }, [open]);
+
   return (
     <>
       <header
@@ -62,7 +115,10 @@ export const Navbar = () => {
               {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
             <button
+              ref={openerRef}
               onClick={() => setOpen(true)}
+              aria-expanded={open}
+              aria-controls="primary-mobile-drawer"
               className="group relative grid h-10 w-10 place-items-center rounded-full border border-border bg-background/80 backdrop-blur text-foreground shadow-soft hover:shadow-glow hover:border-primary/40 hover:-translate-y-0.5 hover:scale-105 active:scale-95 transition-all duration-300"
               aria-label="Open menu"
             >
@@ -85,12 +141,15 @@ export const Navbar = () => {
 
       {/* Side drawer (left, ~half width on mobile, narrower on desktop) */}
       <aside
+        id="primary-mobile-drawer"
+        ref={drawerRef}
         className={cn(
           "fixed top-0 left-0 z-[60] h-[100dvh] w-[78%] max-w-[360px] sm:max-w-[400px] bg-background border-r border-border shadow-lift flex flex-col transition-transform duration-400 ease-out",
           open ? "translate-x-0" : "-translate-x-full",
         )}
         role="dialog"
         aria-modal="true"
+        aria-hidden={!open}
         aria-label="Main menu"
       >
         <div className="h-1 w-full bg-gradient-brand shrink-0" />
