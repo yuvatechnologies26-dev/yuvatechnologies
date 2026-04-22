@@ -25,7 +25,8 @@ export const useCMS = <T = any>(
   useEffect(() => {
     let cancelled = false;
     const load = async () => {
-      let q = supabase.from(table).select("*").order(orderBy, { ascending });
+      const client = supabase as any;
+      let q = client.from(table).select("*").order(orderBy, { ascending });
       if (filter) q = q.eq(filter.column, filter.value);
       const { data: rows, error } = await q;
       if (!cancelled) {
