@@ -5,14 +5,14 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const links = [
-  { label: "Home", href: "#home" },
-  { label: "Services", href: "#services" },
-  { label: "Pricing", href: "#pricing" },
-  { label: "Success Stories", href: "#testimonials" },
-  { label: "Portfolio", href: "#team" },
-  { label: "Blog", href: "#faq" },
-  { label: "Contact", href: "#contact" },
-  { label: "Let's Connect", href: "#contact" },
+  { label: "Home", href: "/#home" },
+  { label: "Services", href: "/#services" },
+  { label: "Pricing", href: "/pricing" },
+  { label: "Success Stories", href: "/#testimonials" },
+  { label: "Portfolio", href: "/#team" },
+  { label: "Blog", href: "/#faq" },
+  { label: "Contact", href: "/#contact" },
+  { label: "Let's Connect", href: "/#contact" },
 ];
 
 export const Navbar = () => {
