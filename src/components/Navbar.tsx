@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Menu, Moon, Sun, X, Lock } from "lucide-react";
+import { Menu, Moon, Sun, X, Lock, ArrowRight } from "lucide-react";
 import { Logo } from "./Logo";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -71,45 +71,70 @@ export const Navbar = () => {
         </div>
       </header>
 
-      {/* Overlay menu */}
+      {/* Slide-down menu (matches reference) */}
       <div
         className={cn(
-          "fixed inset-0 z-[60] bg-background/95 backdrop-blur-xl transition-all duration-300",
-          open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none",
+          "fixed inset-x-0 top-0 z-[60] bg-background/98 backdrop-blur-xl border-b border-border shadow-lift transition-all duration-500 ease-out",
+          open ? "translate-y-0 opacity-100 pointer-events-auto" : "-translate-y-full opacity-0 pointer-events-none",
         )}
       >
+        <div className="h-1 w-full bg-gradient-brand" />
+
         <div className="container mx-auto flex h-16 items-center justify-between container-px">
-          <Logo size={38} />
-          <button
-            onClick={() => setOpen(false)}
-            className="grid h-10 w-10 place-items-center rounded-full border border-border bg-background"
-            aria-label="Close menu"
-          >
-            <X className="h-5 w-5" />
-          </button>
+          <a href="#home" onClick={() => setOpen(false)} className="flex items-center gap-3">
+            <Logo size={38} />
+            <span className="font-display font-extrabold text-foreground">
+              Yuva <span className="text-primary">Technologies</span>
+            </span>
+          </a>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setDark((d) => !d)}
+              className="grid h-10 w-10 place-items-center rounded-full border border-border bg-background text-foreground transition hover:bg-muted"
+              aria-label="Toggle dark mode"
+            >
+              {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </button>
+            <button
+              onClick={() => setOpen(false)}
+              className="grid h-10 w-10 place-items-center rounded-full border border-border bg-background"
+              aria-label="Close menu"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
         </div>
-        <nav className="container mx-auto mt-8 flex flex-col gap-2 container-px pb-12">
+
+        <nav className="container mx-auto container-px pt-6 pb-8 flex flex-col">
           {links.map((l, i) => (
             <a
               key={l.label}
               href={l.href}
               onClick={() => setOpen(false)}
-              className="font-display text-3xl sm:text-4xl font-bold text-foreground transition hover:text-primary py-2 animate-fade-in"
-              style={{ animationDelay: `${i * 40}ms` }}
+              className="group flex items-center justify-between py-4 border-b border-border/60 text-foreground hover:text-primary transition-colors animate-fade-in"
+              style={{ animationDelay: `${i * 50}ms` }}
             >
-              {l.label}
+              <span className="text-base sm:text-lg font-medium">{l.label}</span>
+              <ArrowRight className="h-4 w-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
             </a>
           ))}
+
           <a
             href="/admin"
-            className="mt-2 inline-flex items-center gap-2 text-primary font-semibold animate-fade-in"
+            onClick={() => setOpen(false)}
+            className="mt-6 inline-flex items-center gap-2 text-primary font-semibold animate-fade-in"
+            style={{ animationDelay: `${links.length * 50}ms` }}
           >
             <Lock className="h-4 w-4" /> Admin Panel
           </a>
+
           <Button
             size="lg"
-            className="mt-8 self-start rounded-full px-8 h-12 text-base"
-            onClick={() => setOpen(false)}
+            className="mt-6 w-full rounded-xl h-12 text-base bg-primary hover:bg-primary-dark transition-colors"
+            onClick={() => {
+              setOpen(false);
+              document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+            }}
           >
             Get Started
           </Button>
