@@ -1,6 +1,7 @@
 import { Navbar } from "@/components/Navbar";
 import { FloatingActions } from "@/components/FloatingActions";
 import { Hero } from "@/components/sections/Hero";
+import { TrustedBy } from "@/components/sections/TrustedBy";
 import { Mission } from "@/components/sections/Mission";
 import { Services } from "@/components/sections/Services";
 import { HowItWorks } from "@/components/sections/HowItWorks";
@@ -20,6 +21,7 @@ const Index = () => {
       <Navbar />
       <main>
         <Hero />
+        <TrustedBy />
         <Mission />
         <Services />
         <HowItWorks />
