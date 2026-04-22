@@ -1,26 +1,6 @@
-import { useState } from "react";
 import { Calendar, MessageCircle, Mail, Instagram } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { toast } from "sonner";
 
 export const Contact = () => {
-  const [form, setForm] = useState({ name: "", email: "", platform: "", message: "" });
-
-  const submit = (e: React.FormEvent) => {
-    e.preventDefault();
-    toast.success("Thanks! We'll get back to you within 24 hours.");
-    setForm({ name: "", email: "", platform: "", message: "" });
-  };
 
   const channels = [
     [Calendar, "Book a Meeting", "Free Consultation on Topmate"],
