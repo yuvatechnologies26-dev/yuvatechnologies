@@ -122,16 +122,6 @@ export const Hero = () => {
 
       <div className="container mx-auto container-px relative z-10 py-20">
         <div className="flex flex-col items-center text-center gap-7 max-w-4xl mx-auto">
-          {/* Logo placeholder badge — user will swap later */}
-          <div className="relative animate-scale-in">
-            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-gold via-secondary to-primary blur-md opacity-70" />
-            <div className="relative grid h-[150px] w-[150px] place-items-center rounded-full bg-navy ring-4 ring-white/10 shadow-lift overflow-hidden">
-              <span className="text-[10px] tracking-[0.25em] text-white/60 uppercase">
-                Your Logo
-              </span>
-            </div>
-          </div>
-
           <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur px-4 py-1.5 text-xs font-medium text-white shadow-soft animate-fade-in">
             <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
             Content Growth & Social Media Management Studio
