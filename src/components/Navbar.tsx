@@ -5,14 +5,14 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const links = [
-  { label: "Home", href: "#home" },
-  { label: "Services", href: "#services" },
-  { label: "Pricing", href: "#pricing" },
-  { label: "Success Stories", href: "#testimonials" },
-  { label: "Portfolio", href: "#team" },
-  { label: "Blog", href: "#faq" },
-  { label: "Contact", href: "#contact" },
-  { label: "Let's Connect", href: "#contact" },
+  { label: "Home", href: "/#home" },
+  { label: "Services", href: "/#services" },
+  { label: "Pricing", href: "/pricing" },
+  { label: "Success Stories", href: "/#testimonials" },
+  { label: "Portfolio", href: "/#team" },
+  { label: "Blog", href: "/#faq" },
+  { label: "Contact", href: "/#contact" },
+  { label: "Let's Connect", href: "/#contact" },
 ];
 
 export const Navbar = () => {
@@ -55,16 +55,18 @@ export const Navbar = () => {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setDark((d) => !d)}
-              className="grid h-10 w-10 place-items-center rounded-full border border-border bg-background text-foreground transition hover:bg-muted"
+              className="group relative grid h-10 w-10 place-items-center rounded-full border border-border bg-background/80 backdrop-blur text-foreground shadow-soft hover:shadow-glow hover:border-primary/40 hover:-translate-y-0.5 hover:scale-105 active:scale-95 transition-all duration-300"
               aria-label="Toggle dark mode"
             >
+              <span className="absolute inset-0 rounded-full bg-gradient-brand opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
               {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
             <button
               onClick={() => setOpen(true)}
-              className="grid h-10 w-10 place-items-center rounded-full border border-border bg-background text-foreground transition hover:bg-muted"
+              className="group relative grid h-10 w-10 place-items-center rounded-full border border-border bg-background/80 backdrop-blur text-foreground shadow-soft hover:shadow-glow hover:border-primary/40 hover:-translate-y-0.5 hover:scale-105 active:scale-95 transition-all duration-300"
               aria-label="Open menu"
             >
+              <span className="absolute inset-0 rounded-full bg-gradient-brand opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
               <Menu className="h-5 w-5" />
             </button>
           </div>

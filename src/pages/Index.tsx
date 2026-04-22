@@ -8,7 +8,6 @@ import { HowItWorks } from "@/components/sections/HowItWorks";
 import { WhyChooseUs } from "@/components/sections/WhyChooseUs";
 import { Founder } from "@/components/sections/Founder";
 import { Testimonials } from "@/components/sections/Testimonials";
-import { Pricing } from "@/components/sections/Pricing";
 import { Consultation } from "@/components/sections/Consultation";
 import { FAQ } from "@/components/sections/FAQ";
 import { Team } from "@/components/sections/Team";
@@ -28,7 +27,6 @@ const Index = () => {
         <WhyChooseUs />
         <Founder />
         <Testimonials />
-        <Pricing />
         <Consultation />
         <FAQ />
         <Team />
