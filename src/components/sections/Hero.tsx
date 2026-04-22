@@ -145,7 +145,7 @@ export const Hero = () => {
               onClick={() => toast.success("Booking your free consultation...")}
             >
               <Calendar className="h-4 w-4" />
-              Book Free Consultation
+              {settings.hero_cta1}
             </Button>
             <Button
               size="lg"
@@ -153,14 +153,14 @@ export const Hero = () => {
               className="rounded-full h-12 px-7 text-base bg-white/10 backdrop-blur border-white/30 text-white hover:bg-white/20 hover:text-white"
               onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
             >
-              Get Started <ArrowRight className="h-4 w-4" />
+              {settings.hero_cta2} <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
 
           {/* Stats */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-10 mt-8 w-full max-w-2xl animate-fade-in" style={{ animationDelay: "280ms" }}>
-            {stats.map((s) => (
-              <div key={s.label} className="text-center hover-lift">
+            {stats.map((s: any) => (
+              <div key={s.id} className="text-center hover-lift">
                 <div className="font-display font-extrabold text-2xl text-white">{s.value}</div>
                 <div className="text-xs text-white/70 mt-1">{s.label}</div>
               </div>

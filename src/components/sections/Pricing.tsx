@@ -3,100 +3,16 @@ import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { useCMS } from "@/hooks/useCMS";
 
-const tabs = ["Content Marketing", "YT Management", "One-Time Services"] as const;
+const tabs = ["Content Marketing", "One-Time Services"] as const;
 type Tab = (typeof tabs)[number];
-
-const contentPlans = [
-  {
-    name: "Starter Creator Plan",
-    sub: "Best for new & small creators",
-    price: "₹2,000 – ₹8,000",
-    period: "/month",
-    features: [
-      "Content strategy & ideas",
-      "8–10 reels/shorts editing",
-      "1–2 long videos",
-      "Uploading & scheduling",
-      "Caption + hashtag support",
-      "Basic YouTube/Instagram optimization",
-      "Weekly update",
-    ],
-    popular: false,
-  },
-  {
-    name: "Growth Plan",
-    sub: "Full content growth strategy",
-    price: "₹8,000 – ₹20,000",
-    period: "/month",
-    features: [
-      "Full content growth strategy",
-      "12–20 reels/shorts editing",
-      "2–4 long videos",
-      "YouTube or Instagram management",
-      "Monthly performance report",
-    ],
-    popular: true,
-  },
-  {
-    name: "Premium Management Plan",
-    sub: "For serious creators & brands",
-    price: "₹25,000 – ₹50,000",
-    period: "/month",
-    features: [
-      "End-to-end account management",
-      "20–25 shorts/reels + 4–5 long videos",
-      "YouTube + Instagram handled fully",
-      "Community building support",
-    ],
-    popular: false,
-  },
-];
-
-const ytPlans = [
-  {
-    name: "YT Complete Teaching",
-    price: "₹2,999",
-    period: "one-time",
-    features: ["2-hour comprehensive webinar", "1-on-1 strategy call (30 mins)", "Lifetime access to recordings"],
-    badge: null,
-  },
-  {
-    name: "Toolkit (6 Months)",
-    price: "₹2,499",
-    period: "for 6 months",
-    features: ["Content calendar templates", "Script writing frameworks", "6 months of updates"],
-    badge: null,
-  },
-  {
-    name: "Toolkit (Yearly)",
-    price: "₹3,999",
-    period: "per year",
-    features: ["Everything in 6-month plan", "Full year of updates", "Priority support"],
-    badge: "BEST VALUE",
-  },
-];
-
-const oneTime = [
-  ["Website Creation", "₹8,000 – ₹12,000", false],
-  ["AI Chat Agent", "₹2,000 – ₹3,000", false],
-  ["Website + AI Assistant", "₹12,999 – ₹15,999", true],
-  ["Creation of Inventory", "₹8,000 – ₹12,000", false],
-  ["Inventory Management", "₹2,000 – ₹6,000", false],
-  ["SEO", "₹4,000 – ₹6,000", false],
-  ["UGC Video Creation", "₹300 – ₹500", false],
-  ["UGC Photo Creation", "₹150 – ₹300", false],
-  ["AI Model Creation", "₹2,500 – ₹3,500", false],
-  ["Product Marketing", "₹4,999 – ₹14,999", true],
-  ["Banking Software", "₹80,000 – ₹1,00,000", false],
-  ["Billing Software", "₹45,000 – ₹60,000", false],
-  ["E-commerce Software", "₹80,000", false],
-  ["Account Management Service", "₹6,000 – ₹18,000", false],
-] as const;
 
 export const Pricing = () => {
   const [tab, setTab] = useState<Tab>("Content Marketing");
   const [yearly, setYearly] = useState(false);
+  const { data: contentPlans } = useCMS<any>("pricing_plans");
+  const { data: oneTime } = useCMS<any>("one_time_services");
 
   return (
     <section id="pricing" className="py-20 sm:py-28 bg-muted/40">
@@ -113,7 +29,6 @@ export const Pricing = () => {
           </p>
         </div>
 
-        {/* Tabs */}
         <div className="flex flex-wrap justify-center gap-2 mb-8">
           {tabs.map((t) => (
             <button
@@ -137,10 +52,7 @@ export const Pricing = () => {
               <span className={cn(!yearly && "text-foreground font-semibold")}>Monthly</span>
               <button
                 onClick={() => setYearly((v) => !v)}
-                className={cn(
-                  "relative h-6 w-11 rounded-full transition-colors",
-                  yearly ? "bg-primary" : "bg-border",
-                )}
+                className={cn("relative h-6 w-11 rounded-full transition-colors", yearly ? "bg-primary" : "bg-border")}
               >
                 <span
                   className={cn(
@@ -156,70 +68,63 @@ export const Pricing = () => {
 
             <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
               {contentPlans.map((p) => (
-                <PricingCard key={p.name} plan={p} />
+                <div
+                  key={p.id}
+                  className={cn(
+                    "relative rounded-3xl bg-card border-2 p-7 shadow-card transition-all hover:-translate-y-1 hover:shadow-lift",
+                    p.popular ? "border-primary lg:scale-105" : "border-border",
+                  )}
+                >
+                  {p.popular && (
+                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-primary text-primary-foreground px-3 py-1 text-xs font-bold">
+                      MOST POPULAR
+                    </span>
+                  )}
+                  <div className="font-display font-bold text-lg text-foreground">{p.name}</div>
+                  <div className="text-sm text-muted-foreground mt-1">{p.subtitle}</div>
+                  <div className="mt-5 flex items-baseline gap-2">
+                    <span className="font-display font-extrabold text-3xl text-foreground">{p.price}</span>
+                    <span className="text-sm text-muted-foreground">{p.period}</span>
+                  </div>
+                  <ul className="mt-5 space-y-2">
+                    {(p.features || []).map((f: string) => (
+                      <li key={f} className="flex gap-2 text-sm text-foreground/80">
+                        <Check className="h-4 w-4 text-primary mt-0.5 shrink-0" /> {f}
+                      </li>
+                    ))}
+                  </ul>
+                  <Button
+                    className="w-full mt-6 rounded-full"
+                    variant={p.popular ? "default" : "outline"}
+                    onClick={() => toast.success(`${p.name} selected`)}
+                  >
+                    Get Started
+                  </Button>
+                </div>
               ))}
             </div>
           </>
         )}
 
-        {tab === "YT Management" && (
-          <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            {ytPlans.map((p) => (
-              <div
-                key={p.name}
-                className={cn(
-                  "relative rounded-3xl bg-card border-2 p-7 shadow-card transition-all hover:-translate-y-1 hover:shadow-lift",
-                  p.badge ? "border-secondary" : "border-border",
-                )}
-              >
-                {p.badge && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-secondary text-secondary-foreground px-3 py-1 text-xs font-bold">
-                    {p.badge}
-                  </span>
-                )}
-                <div className="font-display font-bold text-lg text-foreground">{p.name}</div>
-                <div className="mt-4 flex items-baseline gap-2">
-                  <span className="font-display font-extrabold text-3xl text-foreground">{p.price}</span>
-                  <span className="text-sm text-muted-foreground">{p.period}</span>
-                </div>
-                <ul className="mt-5 space-y-2">
-                  {p.features.map((f) => (
-                    <li key={f} className="flex gap-2 text-sm text-foreground/80">
-                      <Check className="h-4 w-4 text-primary mt-0.5 shrink-0" /> {f}
-                    </li>
-                  ))}
-                </ul>
-                <Button
-                  className="w-full mt-6 rounded-full"
-                  variant={p.badge ? "default" : "outline"}
-                  onClick={() => toast.success(`${p.name} selected`)}
-                >
-                  Get Started
-                </Button>
-              </div>
-            ))}
-          </div>
-        )}
-
         {tab === "One-Time Services" && (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-6xl mx-auto">
-            {oneTime.map(([name, price, best]) => (
+            {oneTime.map((s) => (
               <div
-                key={name}
+                key={s.id}
                 className={cn(
                   "relative rounded-2xl bg-card border-2 p-6 shadow-card transition-all hover:-translate-y-1 hover:shadow-lift",
-                  best ? "border-secondary" : "border-border",
+                  s.best_value ? "border-secondary" : "border-border",
                 )}
               >
-                {best && (
+                {s.best_value && (
                   <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-secondary text-secondary-foreground px-3 py-1 text-[10px] font-bold">
                     BEST VALUE
                   </span>
                 )}
-                <div className="font-display font-bold text-foreground">{name}</div>
-                <div className="font-display font-extrabold text-2xl text-primary mt-2">{price}</div>
-                <div className="text-xs text-muted-foreground mt-1">one-time setup + no monthly charges</div>
-                <Button variant="outline" className="w-full mt-4 rounded-full" onClick={() => toast.success(`${name} requested`)}>
+                <div className="font-display font-bold text-foreground">{s.name}</div>
+                <div className="font-display font-extrabold text-2xl text-primary mt-2">{s.price}</div>
+                {s.description && <div className="text-xs text-muted-foreground mt-1">{s.description}</div>}
+                <Button variant="outline" className="w-full mt-4 rounded-full" onClick={() => toast.success(`${s.name} requested`)}>
                   Request Quote
                 </Button>
               </div>
@@ -230,38 +135,3 @@ export const Pricing = () => {
     </section>
   );
 };
-
-const PricingCard = ({ plan }: { plan: typeof contentPlans[number] }) => (
-  <div
-    className={cn(
-      "relative rounded-3xl bg-card border-2 p-7 shadow-card transition-all hover:-translate-y-1 hover:shadow-lift",
-      plan.popular ? "border-primary lg:scale-105" : "border-border",
-    )}
-  >
-    {plan.popular && (
-      <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-primary text-primary-foreground px-3 py-1 text-xs font-bold">
-        MOST POPULAR
-      </span>
-    )}
-    <div className="font-display font-bold text-lg text-foreground">{plan.name}</div>
-    <div className="text-sm text-muted-foreground mt-1">{plan.sub}</div>
-    <div className="mt-5 flex items-baseline gap-2">
-      <span className="font-display font-extrabold text-3xl text-foreground">{plan.price}</span>
-      <span className="text-sm text-muted-foreground">{plan.period}</span>
-    </div>
-    <ul className="mt-5 space-y-2">
-      {plan.features.map((f) => (
-        <li key={f} className="flex gap-2 text-sm text-foreground/80">
-          <Check className="h-4 w-4 text-primary mt-0.5 shrink-0" /> {f}
-        </li>
-      ))}
-    </ul>
-    <Button
-      className="w-full mt-6 rounded-full"
-      variant={plan.popular ? "default" : "outline"}
-      onClick={() => toast.success(`${plan.name} selected`)}
-    >
-      Get Started
-    </Button>
-  </div>
-);
