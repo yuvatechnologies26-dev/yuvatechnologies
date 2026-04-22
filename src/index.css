@@ -145,6 +145,10 @@
     @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lift;
   }
 
+  .hover-glow {
+    @apply transition-all duration-300 hover:shadow-glow hover:-translate-y-0.5;
+  }
+
   .skeleton-shimmer {
     @apply relative overflow-hidden bg-muted;
   }
@@ -157,6 +161,23 @@
       hsl(var(--foreground) / 0.06),
       transparent
     );
+  }
+
+  /* Card hover micro-interaction */
+  .card-interactive {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lift hover:border-primary/40;
+  }
+
+  /* Underline reveal for inline links */
+  .story-link {
+    @apply relative inline-block;
+  }
+  .story-link::after {
+    content: "";
+    @apply absolute left-0 bottom-0 h-0.5 w-full origin-bottom-right scale-x-0 bg-primary transition-transform duration-300;
+  }
+  .story-link:hover::after {
+    @apply origin-bottom-left scale-x-100;
   }
 
   /* Smooth interactive defaults */
@@ -172,4 +193,32 @@
 .reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Image skeleton placeholder while loading */
+img {
+  background:
+    linear-gradient(90deg, hsl(var(--muted)) 0%, hsl(var(--muted) / 0.6) 50%, hsl(var(--muted)) 100%);
+  background-size: 200% 100%;
+  animation: image-skeleton 1.4s ease-in-out infinite;
+}
+img.loaded,
+img[src=""] {
+  background: none;
+  animation: none;
+}
+@keyframes image-skeleton {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Focus ring polish */
+:focus-visible {
+  @apply outline-none ring-2 ring-primary/50 ring-offset-2 ring-offset-background rounded-md;
+}
+
+/* Selection */
+::selection {
+  background: hsl(var(--primary) / 0.25);
+  color: hsl(var(--foreground));
 }
