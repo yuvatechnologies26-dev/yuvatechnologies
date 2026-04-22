@@ -1,21 +1,9 @@
-const creators = [
-  "V Filmy Steps",
-  "Homzyee Property Management",
-  "Rahul Sharma",
-  "Sneha Reddy",
-  "Nispaditha Jewelery",
-  "Coffee Nivasa",
-  "Erivu Studios",
-  "Aarav Vlogs",
-  "Glow & Co.",
-  "Urban Bites",
-  "Maya Creates",
-  "Pixel Forge",
-];
+import { useCMS } from "@/hooks/useCMS";
 
 export const TrustedBy = () => {
-  // Duplicate list for seamless loop
-  const loop = [...creators, ...creators];
+  const { data } = useCMS<any>("trusted_creators");
+  const names = data.length ? data.map((d) => d.name) : ["V Filmy Steps", "Homzyee Property Management", "Rahul Sharma", "Sneha Reddy"];
+  const loop = [...names, ...names];
 
   return (
     <section
@@ -29,7 +17,6 @@ export const TrustedBy = () => {
       </div>
 
       <div className="relative">
-        {/* Edge fades */}
         <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background to-transparent z-10" />
         <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background to-transparent z-10" />
 
