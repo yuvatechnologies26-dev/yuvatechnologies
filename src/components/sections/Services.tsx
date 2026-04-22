@@ -30,7 +30,7 @@ export const Services = () => {
             What We <span className="text-primary">Do</span>
           </h2>
           <p className="mt-4 text-muted-foreground">
-            Eighteen end-to-end services covering content, growth, software and beyond.
+            End-to-end services covering content, growth, software and beyond.
           </p>
         </div>
 
