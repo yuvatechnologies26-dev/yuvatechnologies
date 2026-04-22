@@ -17,7 +17,7 @@ export const Testimonials = () => {
   return (
     <section id="testimonials" className="py-20 sm:py-28 bg-background">
       <div className="container mx-auto container-px">
-        <div className="text-center max-w-2xl mx-auto mb-10">
+        <div className="text-center max-w-2xl mx-auto mb-10 reveal">
           <span className="inline-block rounded-full bg-primary/10 text-primary px-4 py-1.5 text-xs font-semibold mb-4">
             Client Reviews
           </span>
@@ -28,7 +28,7 @@ export const Testimonials = () => {
             Join hundreds of satisfied creators who have grown their channels with us.
           </p>
           <Button
-            className="mt-6 rounded-full px-6 h-11 shadow-glow"
+            className="mt-6 rounded-full px-6 h-11 shadow-glow hover:scale-105 active:scale-95 transition-transform"
             onClick={() => toast.success("We'd love to hear your story!")}
           >
             <MessageCircle className="h-4 w-4" /> Share Your Experience
@@ -36,10 +36,11 @@ export const Testimonials = () => {
         </div>
 
         <div className="columns-1 md:columns-2 lg:columns-3 gap-5 [column-fill:_balance]">
-          {testimonials.map(([quote, name, role, initials]) => (
+          {testimonials.map(([quote, name, role, initials], i) => (
             <div
               key={name}
-              className="mb-5 break-inside-avoid rounded-2xl border border-border bg-muted/40 p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lift hover:bg-card"
+              className="reveal mb-5 break-inside-avoid rounded-2xl border border-border bg-muted/40 p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lift hover:bg-card"
+              style={{ transitionDelay: `${(i % 4) * 80}ms` }}
             >
               <p className="italic text-foreground/80 leading-relaxed">"{quote}"</p>
               <div className="flex items-center gap-1 mt-4">
