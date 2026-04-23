@@ -8,9 +8,9 @@ const links = [
   { label: "Home", href: "/#home" },
   { label: "Services", href: "/#services" },
   { label: "Pricing", href: "/pricing" },
-  { label: "Success Stories", href: "/#testimonials" },
-  { label: "Portfolio", href: "/#team" },
-  { label: "Blog", href: "/#faq" },
+  { label: "Success Stories", href: "/portfolio" },
+  { label: "Team", href: "/#team" },
+  { label: "Reviews", href: "/#testimonials" },
   { label: "Contact", href: "/#contact" },
   { label: "Let's Connect", href: "/#contact" },
 ];

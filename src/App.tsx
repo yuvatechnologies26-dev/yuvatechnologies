@@ -8,6 +8,7 @@ import NotFound from "./pages/NotFound.tsx";
 import Admin from "./pages/Admin.tsx";
 import AdminDashboard from "./pages/AdminDashboard.tsx";
 import PricingPage from "./pages/Pricing.tsx";
+import PortfolioPage from "./pages/Portfolio.tsx";
 import { PageTransition } from "@/components/PageTransition";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
@@ -20,6 +21,7 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/pricing" element={<PricingPage />} />
+        <Route path="/portfolio" element={<PortfolioPage />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/admin/*" element={<AdminDashboard />} />

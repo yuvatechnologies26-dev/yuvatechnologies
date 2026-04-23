@@ -1,10 +1,47 @@
-import { Star, ArrowUpRight, MessageCircle } from "lucide-react";
+import { useState } from "react";
+import { Star, ArrowUpRight, MessageCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 import { useCMS } from "@/hooks/useCMS";
+
+const initialsOf = (name: string) =>
+  name.trim().split(/\s+/).map((p) => p[0]).slice(0, 2).join("").toUpperCase() || "??";
 
 export const Testimonials = () => {
   const { data } = useCMS<any>("testimonials", { filter: { column: "approved", value: true } });
+  const [open, setOpen] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [form, setForm] = useState({ name: "", role: "", text: "", stars: 5 });
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.name.trim() || !form.text.trim()) {
+      toast.error("Please fill in your name and review.");
+      return;
+    }
+    setBusy(true);
+    const { error } = await (supabase as any).from("testimonials").insert({
+      name: form.name.trim(),
+      role: form.role.trim() || "Creator",
+      initials: initialsOf(form.name),
+      text: form.text.trim(),
+      stars: form.stars,
+      approved: false,
+    });
+    setBusy(false);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    toast.success("Thanks! Your review was submitted for approval.");
+    setForm({ name: "", role: "", text: "", stars: 5 });
+    setOpen(false);
+  };
 
   return (
     <section id="testimonials" className="py-20 sm:py-28 bg-background">
@@ -19,12 +56,55 @@ export const Testimonials = () => {
           <p className="mt-4 text-muted-foreground">
             Join hundreds of satisfied creators who have grown their channels with us.
           </p>
-          <Button
-            className="mt-6 rounded-full px-6 h-11 shadow-glow hover:scale-105 active:scale-95 transition-transform"
-            onClick={() => toast.success("We'd love to hear your story!")}
-          >
-            <MessageCircle className="h-4 w-4" /> Share Your Experience
-          </Button>
+
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+              <Button className="mt-6 rounded-full px-6 h-11 shadow-glow hover:scale-105 active:scale-95 transition-transform">
+                <MessageCircle className="h-4 w-4" /> Share Your Experience
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle>Share your experience</DialogTitle>
+                <DialogDescription>
+                  Your review will appear after a quick approval check.
+                </DialogDescription>
+              </DialogHeader>
+              <form onSubmit={submit} className="space-y-4 mt-2">
+                <div className="space-y-1.5">
+                  <Label htmlFor="t-name">Your name</Label>
+                  <Input id="t-name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="t-role">Role / Channel (optional)</Label>
+                  <Input id="t-role" value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })} placeholder="e.g. Tech YouTuber" />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="t-text">Your review</Label>
+                  <Textarea id="t-text" rows={4} value={form.text} onChange={(e) => setForm({ ...form, text: e.target.value })} required />
+                </div>
+                <div className="space-y-1.5">
+                  <Label>Rating</Label>
+                  <div className="flex items-center gap-1">
+                    {[1, 2, 3, 4, 5].map((n) => (
+                      <button
+                        key={n}
+                        type="button"
+                        onClick={() => setForm({ ...form, stars: n })}
+                        className="p-1"
+                        aria-label={`${n} stars`}
+                      >
+                        <Star className={`h-5 w-5 ${n <= form.stars ? "fill-gold text-gold" : "text-muted-foreground"}`} />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <Button type="submit" disabled={busy} className="w-full rounded-full h-11">
+                  {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : "Submit Review"}
+                </Button>
+              </form>
+            </DialogContent>
+          </Dialog>
         </div>
 
         <div className="columns-1 md:columns-2 lg:columns-3 gap-5 [column-fill:_balance]">

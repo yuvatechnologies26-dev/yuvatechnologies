@@ -63,7 +63,7 @@ export const Hero = () => {
   return (
     <section
       id="home"
-      className="relative min-h-screen pt-16 flex items-center overflow-hidden bg-navy"
+      className="relative min-h-screen pt-16 flex items-center overflow-hidden bg-gradient-hero dark:bg-navy"
     >
       {/* Background image carousel */}
       <div className="absolute inset-0">
@@ -78,16 +78,18 @@ export const Hero = () => {
             <img
               src={s.image}
               alt=""
-              className={`h-full w-full object-cover ${
+              loading={i === 0 ? "eager" : "lazy"}
+              decoding="async"
+              className={`h-full w-full object-cover opacity-30 dark:opacity-100 ${
                 i === active ? "animate-ken-burns" : ""
               }`}
               key={`${i}-${active === i ? "active" : "idle"}`}
             />
           </div>
         ))}
-        {/* Overlays for legibility */}
-        <div className="absolute inset-0 bg-navy/70" />
-        <div className="absolute inset-0 bg-gradient-to-b from-navy/40 via-navy/60 to-navy" />
+        {/* Light: soft white wash. Dark: navy wash. */}
+        <div className="absolute inset-0 bg-background/70 dark:bg-navy/70" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/60 to-background dark:from-navy/40 dark:via-navy/60 dark:to-navy" />
       </div>
 
       {/* Color blobs */}

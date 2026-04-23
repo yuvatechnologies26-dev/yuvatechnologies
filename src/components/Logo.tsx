@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import logoSrc from "@/assets/yuva-logo.png";
 
 interface LogoProps {
   size?: number;
@@ -10,18 +11,16 @@ interface LogoProps {
 export const Logo = ({ size = 40, showText = false, className, variant = "default" }: LogoProps) => {
   return (
     <div className={cn("flex items-center gap-3", className)}>
-      <div
-        className="relative grid place-items-center rounded-full bg-gradient-brand shadow-glow"
+      <img
+        src={logoSrc}
+        alt="Yuva Technologies logo"
+        width={size}
+        height={size}
+        loading="eager"
+        decoding="async"
+        className="rounded-xl object-contain shadow-soft bg-navy"
         style={{ width: size, height: size }}
-        aria-label="Yuva Technologies logo"
-      >
-        <span
-          className="font-display font-extrabold text-primary-foreground leading-none"
-          style={{ fontSize: size * 0.38 }}
-        >
-          YT
-        </span>
-      </div>
+      />
       {showText && (
         <span
           className={cn(
