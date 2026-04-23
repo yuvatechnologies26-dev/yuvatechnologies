@@ -175,14 +175,14 @@ export const Hero = () => {
                 onClick={() => setActive(i)}
                 aria-label={`Go to slide ${i + 1}`}
                 className={`h-2 rounded-full transition-all duration-300 ${
-                  i === active ? "w-8 bg-primary" : "w-2 bg-foreground/20 dark:bg-white/30 hover:bg-foreground/50 dark:hover:bg-white/60"
+                  i === active ? "w-8 bg-primary" : "w-2 bg-white/30 hover:bg-white/60"
                 }`}
               />
             ))}
           </div>
 
           {!isLoaded && (
-            <div className="text-[11px] text-muted-foreground dark:text-white/40 mt-2">Loading visuals…</div>
+            <div className="text-[11px] text-white/50 mt-2">Loading visuals…</div>
           )}
         </div>
       </div>
