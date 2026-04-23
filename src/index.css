@@ -195,17 +195,12 @@
   transform: translateY(0);
 }
 
-/* Image skeleton placeholder while loading */
-img {
+/* Image skeleton placeholder while loading — opt-in via data-skeleton */
+img[data-skeleton]:not(.loaded) {
   background:
     linear-gradient(90deg, hsl(var(--muted)) 0%, hsl(var(--muted) / 0.6) 50%, hsl(var(--muted)) 100%);
   background-size: 200% 100%;
   animation: image-skeleton 1.4s ease-in-out infinite;
-}
-img.loaded,
-img[src=""] {
-  background: none;
-  animation: none;
 }
 @keyframes image-skeleton {
   0% { background-position: 200% 0; }
