@@ -68,13 +68,22 @@ const Admin = () => {
       return;
     }
 
-    // Grant admin role to the new user (anyone with the code is admin)
-    if (data.user) {
-      await supabase.from("user_roles").insert({ user_id: data.user.id, role: "admin" });
+    // If we have an active session immediately (email confirm off), grant admin role via RPC
+    if (data.session) {
+      await (supabase as any).rpc("redeem_admin_code", { _code: signUp.code });
+    } else {
+      // Try sign in (in case auto-confirm is on but signUp didn't return a session)
+      const { data: signInData } = await supabase.auth.signInWithPassword({
+        email: signUp.email,
+        password: signUp.password,
+      });
+      if (signInData.session) {
+        await (supabase as any).rpc("redeem_admin_code", { _code: signUp.code });
+      }
     }
 
     setBusy(false);
-    setSuccess("Account created! Switching to Sign In…");
+    setSuccess("Account created! Logging you in…");
     setTimeout(() => {
       setTab("signin");
       setSignIn({ email: signUp.email, password: "" });
