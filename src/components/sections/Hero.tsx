@@ -80,16 +80,16 @@ export const Hero = () => {
               alt=""
               loading={i === 0 ? "eager" : "lazy"}
               decoding="async"
-              className={`h-full w-full object-cover opacity-30 dark:opacity-100 ${
-                i === active ? "animate-ken-burns" : ""
-              }`}
+            className={`h-full w-full object-cover opacity-70 dark:opacity-100 ${
+              i === active ? "animate-ken-burns" : ""
+            }`}
               key={`${i}-${active === i ? "active" : "idle"}`}
             />
           </div>
         ))}
-        {/* Light: soft white wash. Dark: navy wash. */}
-        <div className="absolute inset-0 bg-background/70 dark:bg-navy/70" />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/60 to-background dark:from-navy/40 dark:via-navy/60 dark:to-navy" />
+        {/* Light: dark gradient wash for legibility. Dark: navy wash. */}
+        <div className="absolute inset-0 bg-navy/55 dark:bg-navy/70" />
+        <div className="absolute inset-0 bg-gradient-to-b from-navy/40 via-navy/55 to-navy/75 dark:from-navy/40 dark:via-navy/60 dark:to-navy" />
       </div>
 
       {/* Color blobs */}
@@ -117,15 +117,14 @@ export const Hero = () => {
 
       <div className="container mx-auto container-px relative z-10 py-20">
         <div className="flex flex-col items-center text-center gap-7 max-w-4xl mx-auto">
-          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 dark:border-white/20 dark:bg-white/10 backdrop-blur px-4 py-1.5 text-xs font-medium text-foreground dark:text-white shadow-soft animate-fade-in">
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur px-4 py-1.5 text-xs font-medium text-white shadow-soft animate-fade-in">
             <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
             Content Growth & Social Media Management Studio
           </span>
 
-          {/* Animated headline — re-mounts per slide */}
           <h1
             key={`title-${active}`}
-            className="font-display font-extrabold leading-[1.05] text-[clamp(2.25rem,6vw,4rem)] text-foreground dark:text-white animate-fade-in"
+            className="font-display font-extrabold leading-[1.05] text-[clamp(2.25rem,6vw,4rem)] text-white animate-fade-in drop-shadow-[0_2px_12px_rgba(0,0,0,0.35)]"
           >
             {current.title}
             <br />
@@ -134,7 +133,7 @@ export const Hero = () => {
 
           <p
             key={`desc-${active}`}
-            className="text-lg text-muted-foreground dark:text-white/80 max-w-2xl animate-fade-in"
+            className="text-lg text-white/85 max-w-2xl animate-fade-in"
             style={{ animationDelay: "120ms" }}
           >
             {current.desc}
@@ -152,19 +151,18 @@ export const Hero = () => {
             <Button
               size="lg"
               variant="outline"
-              className="rounded-full h-12 px-7 text-base bg-card/70 backdrop-blur border-border text-foreground hover:bg-card dark:bg-white/10 dark:border-white/30 dark:text-white dark:hover:bg-white/20 dark:hover:text-white"
+              className="rounded-full h-12 px-7 text-base bg-white/10 backdrop-blur border-white/30 text-white hover:bg-white/20 hover:text-white"
               onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
             >
               {settings.hero_cta2} <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
 
-          {/* Stats */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-10 mt-8 w-full max-w-2xl animate-fade-in" style={{ animationDelay: "280ms" }}>
             {stats.map((s: any) => (
               <div key={s.id} className="text-center hover-lift">
-                <div className="font-display font-extrabold text-2xl text-foreground dark:text-white">{s.value}</div>
-                <div className="text-xs text-muted-foreground dark:text-white/70 mt-1">{s.label}</div>
+                <div className="font-display font-extrabold text-2xl text-white drop-shadow">{s.value}</div>
+                <div className="text-xs text-white/75 mt-1">{s.label}</div>
               </div>
             ))}
           </div>
@@ -177,14 +175,14 @@ export const Hero = () => {
                 onClick={() => setActive(i)}
                 aria-label={`Go to slide ${i + 1}`}
                 className={`h-2 rounded-full transition-all duration-300 ${
-                  i === active ? "w-8 bg-primary" : "w-2 bg-foreground/20 dark:bg-white/30 hover:bg-foreground/50 dark:hover:bg-white/60"
+                  i === active ? "w-8 bg-primary" : "w-2 bg-white/30 hover:bg-white/60"
                 }`}
               />
             ))}
           </div>
 
           {!isLoaded && (
-            <div className="text-[11px] text-muted-foreground dark:text-white/40 mt-2">Loading visuals…</div>
+            <div className="text-[11px] text-white/50 mt-2">Loading visuals…</div>
           )}
         </div>
       </div>
