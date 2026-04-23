@@ -80,16 +80,16 @@ export const Hero = () => {
               alt=""
               loading={i === 0 ? "eager" : "lazy"}
               decoding="async"
-              className={`h-full w-full object-cover opacity-30 dark:opacity-100 ${
-                i === active ? "animate-ken-burns" : ""
-              }`}
+            className={`h-full w-full object-cover opacity-70 dark:opacity-100 ${
+              i === active ? "animate-ken-burns" : ""
+            }`}
               key={`${i}-${active === i ? "active" : "idle"}`}
             />
           </div>
         ))}
-        {/* Light: soft white wash. Dark: navy wash. */}
-        <div className="absolute inset-0 bg-background/70 dark:bg-navy/70" />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/60 to-background dark:from-navy/40 dark:via-navy/60 dark:to-navy" />
+        {/* Light: dark gradient wash for legibility. Dark: navy wash. */}
+        <div className="absolute inset-0 bg-navy/55 dark:bg-navy/70" />
+        <div className="absolute inset-0 bg-gradient-to-b from-navy/40 via-navy/55 to-navy/75 dark:from-navy/40 dark:via-navy/60 dark:to-navy" />
       </div>
 
       {/* Color blobs */}
